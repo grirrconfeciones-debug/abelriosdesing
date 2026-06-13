@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 120" width="100%" height="100%">
+  <defs>
+    <!-- Corel-like vibrant gradients -->
+    <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE" />
+      <stop offset="50%" stop-color="#4FACFE" />
+      <stop offset="100%" stop-color="#0000FF" />
+    </linearGradient>
+    <linearGradient id="accent-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F9D423" />
+      <stop offset="100%" stop-color="#FF4E50" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <drop-shadow dx="0" dy="4" stdDeviation="6" flood-color="#00F2FE" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Vector Icon: Node, curves and pencil representation -->
+  <g transform="translate(10, 10)">
+    <!-- Nodes background circle glow -->
+    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logo-grad)" stroke-width="2" opacity="0.3" />
+    
+    <!-- Path Line with Nodes -->
+    <path d="M 20 75 C 30 20, 70 20, 80 75" fill="none" stroke="url(#logo-grad)" stroke-width="4" filter="url(#glow)" />
+    <path d="M 20 75 C 30 20, 70 20, 80 75" fill="none" stroke="url(#accent-grad)" stroke-width="2" />
+    
+    <!-- Nodes (Small Squares representing vector anchor points) -->
+    <rect x="16" y="71" width="8" height="8" fill="#111827" stroke="#00F2FE" stroke-width="2" />
+    <rect x="76" y="71" width="8" height="8" fill="#111827" stroke="#00F2FE" stroke-width="2" />
+    <!-- Control Point Node -->
+    <rect x="46" y="30" width="8" height="8" fill="#FF4E50" stroke="#F9D423" stroke-width="2" transform="rotate(45 50 34)" />
+    
+    <!-- Control Lines -->
+    <line x1="20" y1="75" x2="50" y2="34" stroke="#00F2FE" stroke-width="1" stroke-dasharray="2,2" opacity="0.7" />
+    <line x1="80" y1="75" x2="50" y2="34" stroke="#FF4E50" stroke-width="1" stroke-dasharray="2,2" opacity="0.7" />
+  </g>
+
+  <!-- Typography -->
+  <!-- "Abel" in Outfit-like thick modern font -->
+  <text x="125" y="62" font-family="'Outfit', 'Inter', 'Segoe UI', sans-serif" font-weight="900" font-size="38" fill="#FFFFFF" letter-spacing="2">
+    ABEL
+  </text>
+  <!-- "VECTORES" in stylized gradient/accent -->
+  <text x="125" y="94" font-family="'Outfit', 'Inter', 'Segoe UI', sans-serif" font-weight="700" font-size="24" fill="url(#accent-grad)" letter-spacing="4">
+    VECTORES
+  </text>
+  
+  <!-- "COREL DRAW" badge -->
+  <rect x="260" y="38" width="105" height="22" rx="4" fill="none" stroke="url(#logo-grad)" stroke-width="1.5" />
+  <text x="312.5" y="53" font-family="'Inter', 'Segoe UI', sans-serif" font-weight="800" font-size="10" fill="#00F2FE" letter-spacing="1" text-anchor="middle">
+    COREL DRAW
+  </text>
+</svg>
