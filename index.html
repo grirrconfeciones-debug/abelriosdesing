@@ -4,367 +4,235 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="Venta de vectores de polos deportivos para sublimación en CorelDRAW. Patrones a escala real 1:1 de fútbol, e-sports, básquetbol, ciclismo y motocross. WhatsApp: 982296407.">
-  <title>Abel Vectores | Diseños de Polos Deportivos para Sublimación en CorelDRAW</title>
-
-  <!-- FontAwesome for Premium Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- Local Stylesheet -->
+  <title>Abel Vectores | Diseños Deportivos para Sublimación</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-
-  <!-- ==========================================
-       HEADER & NAVEGACIÓN
-       ========================================== -->
   <header class="header">
-    <div class="container">
-      <a href="#inicio" class="logo">
-        <img src="images/logo.svg" alt="Abel Vectores Logo" id="siteLogo">
-      </a>
-
-      <!-- Desktop Navigation Menu -->
-      <nav>
-        <ul class="nav-menu" id="navMenu">
-          <li><a href="#inicio" class="nav-link active">Inicio</a></li>
-          <li><a href="#catalogo" class="nav-link">Catálogo</a></li>
-          <li><a href="#acerca" class="nav-link">Acerca de</a></li>
-          <li><a href="#contacto" class="nav-link">Contacto</a></li>
-        </ul>
-      </nav>
-
-      <!-- Hamburger Menu Button for Mobile -->
-      <button class="nav-toggle" id="mobileMenuBtn" aria-label="Abrir menú de navegación">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
+    <div class="logo">Abel<span>Vectores</span></div>
+    <nav class="nav-menu" id="navMenu">
+      <a href="#catalogo" class="nav-link active">Catálogo</a>
+    </nav>
   </header>
 
-  <main>
-    <!-- ==========================================
-         HERO / INICIO SECTION
-         ========================================== -->
-    <section id="inicio" class="hero">
-      <div class="hero-grid-overlay"></div>
-      <div class="container">
-        <div class="hero-content">
-          <div class="hero-tag">
-            <i class="fas fa-tshirt"></i> Sublimación Textil de Polos Deportivos
+  <section id="loginSection" style="display:none;" class="login-section">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <i class="fas fa-user-shield login-icon"></i>
+          <h2>Acceso Admin</h2>
+          <p>Ingresa tus credenciales para gestionar tus diseños</p>
+        </div>
+
+        <form id="loginForm" class="login-form">
+          <div class="input-group">
+            <label for="adminEmail">
+              <i class="fas fa-envelope"></i> Correo Electrónico
+            </label>
+            <input type="email" id="adminEmail" placeholder="ejemplo@correo.com" required autocomplete="email">
           </div>
-          <h1 class="hero-title">Vectores de Polos Deportivos listos para <span class="text-gradient">Sublimar</span>
-          </h1>
-          <p class="hero-desc">
-            Diseños profesionales en CorelDRAW a escala real 1:1. Patrones completos (delantero, espalda, mangas y
-            cuello) con nodos limpios y listos para impresión en plotter.
-          </p>
-          <div class="hero-buttons">
-            <a href="#catalogo" class="btn-primary">
-              <i class="fas fa-shopping-bag"></i> Ver Catálogo
-            </a>
-            <a href="#acerca" class="btn-secondary">
-              <i class="fas fa-info-circle"></i> Características
-            </a>
+
+          <div class="input-group">
+            <label for="adminPass">
+              <i class="fas fa-key"></i> Contraseña
+            </label>
+            <div class="password-wrapper">
+              <input type="password" id="adminPass" placeholder="Ingresa tu contraseña" required
+                autocomplete="current-password">
+              <button type="button" class="password-toggle" id="passwordToggle">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
           </div>
+
+          <button type="submit" id="loginBtn" class="login-btn">
+            <i class="fas fa-sign-in-alt"></i> Entrar
+          </button>
+        </form>
+
+        <div class="login-footer">
+          <p>¿No tienes acceso? Contacta al administrador</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ==========================================
-         CATÁLOGO SECTION
-         ========================================== -->
-    <section id="catalogo" class="catalog-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-subtitle">Trazos Listos para Imprimir</span>
-          <h2 class="section-title">Catálogo de Diseños</h2>
-        </div>
-
-        <!-- Filter and Search Bar -->
-        <div class="filter-bar glass">
-          <!-- Realtime Search Box -->
-          <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Buscar camiseta, código o palabra clave...">
-          </div>
-
-          <!-- Category Filters -->
-          <div class="category-filters" id="categoryFilters">
-            <button class="filter-btn active" data-category="all">Todos los Deportes</button>
-            <button class="filter-btn" data-category="futbol">Fútbol</button>
-            <button class="filter-btn" data-category="esports">E-Sports</button>
-            <button class="filter-btn" data-category="motocross">Motocross</button>
-            <button class="filter-btn" data-category="basquet-otros">Básquet & Otros</button>
+  <section id="adminPanel" style="display:none;" class="admin-section">
+    <div class="admin-container">
+      <div class="admin-header">
+        <div class="admin-title">
+          <i class="fas fa-chart-line"></i>
+          <div>
+            <h2>Panel de Control</h2>
+            <p>Gestiona tu catálogo de diseños deportivos</p>
           </div>
         </div>
-
-        <!-- Catalog Dynamic Grid -->
-        <div class="catalog-grid" id="catalogGrid">
-          <!-- Tarjetas renderizadas con JavaScript -->
-        </div>
-
-        <!-- Dynamic Pagination -->
-        <div class="pagination" id="pagination">
-          <!-- Botones de páginas renderizados con JavaScript -->
-        </div>
+        <button id="logoutBtn" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
       </div>
-    </section>
 
-    <!-- ==========================================
-         ACERCA DE SECTION
-         ========================================== -->
-    <section id="acerca" class="about-section">
-      <div class="container">
-        <div class="about-grid">
-          <!-- Graphic Visual / Corel Workspace simulation -->
-          <div class="about-visual glass">
-            <img src="images/vector8.svg" alt="Camiseta Incaic de Fútbol - Trazado Vectorial">
-            <div class="about-badge-floating glass">
-              <i class="fas fa-check-circle"></i>
-              <div class="about-badge-text">
-                <h4>Moldes 1:1</h4>
-                <p>Delantero, espalda y mangas incluidos</p>
-              </div>
-            </div>
+      <div class="admin-grid">
+        <div class="upload-card">
+          <div class="card-header">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <h3>Subir Nuevo Diseño</h3>
           </div>
 
-          <!-- Text Info -->
-          <div class="about-info">
-            <span class="section-subtitle">Optimizado para Confeccionistas</span>
-            <h2>Vectores exactos que calzan a la perfección</h2>
-            <p>
-              Quienes nos dedicamos a confeccionar polos deportivos sabemos que un mal trazo arruina el armado de la
-              prenda.
-              Mis diseños están hechos a escala real en CorelDRAW, garantizando que el diseño del pecho coincida
-              perfectamente con las costuras de las mangas y los cuellos.
-            </p>
-
-            <div class="about-features">
-              <div class="feature-item">
-                <i class="fas fa-crop-alt"></i>
-                <div class="feature-text">
-                  <h4>Escala 1:1 y Tallas Reales</h4>
-                  <p>Moldes listos para impresión directa en tallas comerciales, escalables sin deformar.</p>
-                </div>
-              </div>
-              <div class="feature-item">
-                <i class="fas fa-palette"></i>
-                <div class="feature-text">
-                  <h4>Perfil de Color CMYK</h4>
-                  <p>Colores vivos y negros profundos listos para el papel y calandra de sublimación.</p>
-                </div>
-              </div>
-              <div class="feature-item">
-                <i class="fas fa-object-group"></i>
-                <div class="feature-text">
-                  <h4>Textos y Números Editables</h4>
-                  <p>Inserta logos de auspiciadores, nombres y números en segundos usando CorelDRAW.</p>
-                </div>
-              </div>
-              <div class="feature-item">
-                <i class="fas fa-headset"></i>
-                <div class="feature-text">
-                  <h4>Soporte Técnico Textil</h4>
-                  <p>Te asesoro en la escala de tus patrones y dudas en el calce de piezas de costura.</p>
-                </div>
-              </div>
+          <form id="uploadForm" class="upload-form">
+            <div class="input-group">
+              <label for="title">
+                <i class="fas fa-tag"></i> Nombre del Diseño
+              </label>
+              <input type="text" id="title" placeholder="Ex: Jersey fútbol Perú 2026" required>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ==========================================
-         CONTACTO SECTION
-         ========================================== -->
-    <section id="contacto" class="contact-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-subtitle">¿Deseas un diseño exclusivo o digitalizar un polo?</span>
-          <h2 class="section-title">Contáctame Directo</h2>
-        </div>
+            <div class="input-group">
+              <label for="price">
+                <i class="fas fa-money-bill"></i> Precio (S/.)
+              </label>
+              <input type="number" id="price" placeholder="50" step="0.01" min="0" required>
+            </div>
 
-        <div class="contact-grid">
-          <!-- Information Card -->
-          <div class="contact-card glass">
-            <h3>Información de Contacto</h3>
-            <p>Escríbeme para cotizar la vectorización de camisetas de equipos de fútbol profesional, logos de clubes
-              deportivos o diseños exclusivos para tu marca de ropa deportiva.</p>
+            <div class="input-group">
+              <label for="type">
+                <i class="fas fa-tags"></i> Tipo
+              </label>
+              <select id="type" required>
+                <option value="">Selecciona tipo</option>
+                <option value="gratis">Gratis</option>
+                <option value="compra">Compra</option>
+              </select>
+            </div>
 
-            <div class="contact-details">
-              <div class="contact-item">
-                <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
-                <div class="contact-text">
-                  <h4>WhatsApp de Ventas</h4>
-                  <p><a href="https://wa.me/51982296407" target="_blank" class="text-gradient">982296407</a></p>
-                </div>
-              </div>
-              <div class="contact-item">
-                <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                <div class="contact-text">
-                  <h4>Email Corporativo</h4>
-                  <p><a href="mailto:abel.vectores@gmail.com">abel.vectores@gmail.com</a></p>
-                </div>
-              </div>
-              <div class="contact-item">
-                <div class="contact-icon"><i class="fas fa-clock"></i></div>
-                <div class="contact-text">
-                  <h4>Horario de Atención</h4>
-                  <p>Lunes a Sábado: 8:00 AM - 8:00 PM</p>
-                </div>
-              </div>
+            <div class="input-group" id="downloadUrlGroup" style="display:none;">
+              <label for="downloadUrl">
+                <i class="fas fa-link"></i> URL de descarga
+              </label>
+              <input type="text" id="downloadUrl" placeholder="https://...">
             </div>
-          </div>
 
-          <!-- Dynamic Form -->
-          <form class="contact-form glass" id="contactForm">
-            <h3>Consultas / Pedidos Especiales</h3>
-            <div class="form-group">
-              <label for="contactName">Nombre Completo</label>
-              <input type="text" id="contactName" placeholder="Ej. Carlos Mendoza" required>
+            <div class="input-group">
+              <label for="category">
+                <i class="fas fa-list"></i> Categoría
+              </label>
+              <select id="category" required>
+                <option value="">Selecciona categoría</option>
+                <option value="futbol">Fútbol</option>
+                <option value="esports">Esports</option>
+                <option value="motocross">Motocross</option>
+              </select>
             </div>
-            <div class="form-group">
-              <label for="contactEmail">Correo Electrónico</label>
-              <input type="email" id="contactEmail" placeholder="Ej. carlos@tallertextil.com" required>
+
+            <div class="input-group">
+              <label for="image">
+                <i class="fas fa-image"></i> URL de Imagen
+              </label>
+              <input type="text" id="image" placeholder="https://example.com/imagen.jpg" required>
             </div>
-            <div class="form-group">
-              <label for="contactMsg">Detalles del Pedido</label>
-              <textarea id="contactMsg" rows="4"
-                placeholder="Ej. Hola Abel, deseo digitalizar el polo alternativo del Barcelona 2026 para sublimar un lote de 50 camisetas..."
-                required></textarea>
+
+            <div class="input-group">
+              <label for="longDescription">
+                <i class="fas fa-align-left"></i> Descripción Detallada
+              </label>
+              <textarea id="longDescription" placeholder="Describe los detalles del diseño, materiales, tamaño, etc."
+                rows="4"></textarea>
             </div>
-            <button type="submit" class="btn-primary">
-              <i class="fab fa-whatsapp"></i> Enviar a WhatsApp
+
+            <button type="submit" class="upload-btn">
+              <i class="fas fa-upload"></i> Subir Diseño
             </button>
           </form>
         </div>
-      </div>
-    </section>
-  </main>
 
-  <!-- ==========================================
-       FOOTER (PIE DE PÁGINA)
-       ========================================== -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-top">
-        <!-- Brand identity -->
-        <div class="footer-brand">
-          <div class="footer-logo">
-            <img src="images/logo.svg" alt="Abel Vectores Logo">
+        <div class="list-card">
+          <div class="card-header">
+            <i class="fas fa-th-list"></i>
+            <h3>Tus Diseños</h3>
+            <span id="designCount" class="design-count">0 diseños</span>
           </div>
-          <p class="footer-quote">
-            "Moldes exactos y trazados limpios listos para sublimar y confeccionar. Llevamos el diseño de tu taller al
-            siguiente nivel."
-          </p>
-          <div class="footer-socials">
-            <a href="https://wa.me/51982296407" target="_blank" class="social-btn" aria-label="WhatsApp"><i
-                class="fab fa-whatsapp"></i></a>
-            <a href="#" class="social-btn" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-btn" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+
+          <div class="list-controls">
+            <div class="search-wrapper">
+              <i class="fas fa-search"></i>
+              <input type="text" id="adminSearch" placeholder="Buscar diseños..." class="search-input">
+            </div>
+
+            <div class="filter-wrapper">
+              <select id="adminFilter" class="filter-select">
+                <option value="all">Todas las categorías</option>
+                <option value="futbol">Fútbol</option>
+                <option value="esports">Esports</option>
+                <option value="motocross">Motocross</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <!-- Sitemap Links -->
-        <div class="footer-links">
-          <h4>Navegación</h4>
-          <ul>
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#catalogo">Catálogo de Polos</a></li>
-            <li><a href="#acerca">Acerca de mi Trabajo</a></li>
-            <li><a href="#contacto">Contacto Directo</a></li>
-          </ul>
+          <div id="adminListGrid" class="admin-list-grid"></div>
         </div>
-
-        <!-- Payments accepted (Convenient feature additions) -->
-        <div class="footer-payments">
-          <h4>Métodos de Pago</h4>
-          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px;">Aceptamos pagos al instante.
-            Los archivos editables en CorelDRAW se envían inmediatamente por WhatsApp o correo electrónico.</p>
-          <div class="payment-methods">
-            <span class="payment-badge yape">Yape</span>
-            <span class="payment-badge plin">Plin</span>
-            <span class="payment-badge">BCP</span>
-            <span class="payment-badge">Interbank</span>
-            <span class="payment-badge">PayPal</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Copyright and Credits -->
-      <div class="footer-bottom">
-        <p>&copy; 2026 Abel Vectores Sublimación. Todos los derechos reservados.</p>
-        <p>Diseño y desarrollo web premium enfocado en la industria textil deportiva.</p>
       </div>
     </div>
-  </footer>
+  </section>
 
-  <!-- ==========================================
-       MODAL DE DETALLE DEL VECTOR (GLASSMORPHISM)
-       ========================================== -->
-  <div class="modal" id="detailModal">
-    <div class="modal-overlay"></div>
-    <div class="modal-container">
-      <button class="modal-close" id="modalClose" aria-label="Cerrar modal">&times;</button>
-
-      <!-- Left side: Image -->
-      <div class="modal-img-area">
-        <img src="" alt="" id="modalImg">
+  <section id="catalogo" class="catalog-section">
+    <div class="container">
+      <div class="catalog-header">
+        <h2><i class="fas fa-palette"></i> Nuestros Diseños</h2>
+        <p>Diseños deportivos de alta calidad para sublimación</p>
       </div>
 
-      <!-- Right side: Details and Checkout CTA -->
-      <div class="modal-details-area">
-        <span class="modal-category" id="modalCategory">CATEGORÍA</span>
-        <h3 class="modal-title" id="modalTitle">Nombre del Vector</h3>
-        <div class="modal-price-box">
-          <span class="modal-price" id="modalPrice">S/. 0.00</span>
-        </div>
-        <p class="modal-desc" id="modalDesc">Descripción completa del vector...</p>
-
-        <!-- Detailed specs -->
-        <div class="modal-spec-list">
-          <div class="modal-spec-item">
-            <span class="modal-spec-label">Código:</span>
-            <span class="modal-spec-value" id="modalId">POL-000</span>
-          </div>
-          <div class="modal-spec-item">
-            <span class="modal-spec-label">Formatos:</span>
-            <span class="modal-spec-value" id="modalFormats">CDR / PDF / EPS</span>
-          </div>
-          <div class="modal-spec-item">
-            <span class="modal-spec-label">Complejidad:</span>
-            <span class="modal-spec-value" id="modalNodes">0 Nodos</span>
-          </div>
-          <div class="modal-spec-item">
-            <span class="modal-spec-label">Usabilidad:</span>
-            <span class="modal-spec-value" id="modalUsabilidad">Sublimación Textil</span>
-          </div>
-          <div class="modal-spec-item">
-            <span class="modal-spec-label">Moldes:</span>
-            <span class="modal-spec-value" id="modalMateriales">Escala 1:1</span>
-          </div>
+      <div class="catalog-controls">
+        <div class="search-wrapper public">
+          <i class="fas fa-search"></i>
+          <input type="text" id="publicSearch" placeholder="Buscar diseños..." class="search-input">
         </div>
 
-        <a href="" target="_blank" class="btn-whatsapp" id="modalBuyBtn">
-          <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
-        </a>
+        <div class="filter-wrapper public">
+          <select id="publicFilter" class="filter-select">
+            <option value="all">Todas las categorías</option>
+            <option value="futbol">Fútbol</option>
+            <option value="esports">Esports</option>
+            <option value="motocross">Motocross</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-wrapper public" style="max-width: 220px; margin: 0 auto 1.5rem;">
+        <select id="publicTypeFilter" class="filter-select">
+          <option value="all">Todos los tipos</option>
+          <option value="gratis">Gratis</option>
+          <option value="compra">Compra</option>
+        </select>
+      </div>
+
+      <div id="catalogGrid" class="catalog-grid"></div>
+    </div>
+  </section>
+
+  <div id="detailModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <span id="modalClose" class="close-btn">&times;</span>
+      <div class="modal-header">
+        <h2 id="modalTitle"></h2>
+      </div>
+      <img id="modalImg" src="" alt="Detalle" class="modal-img">
+      <div class="modal-body">
+        <p id="modalDescription"></p>
+      </div>
+      <div class="modal-footer">
+        <span id="modalPrice" class="modal-price"></span>
+        <span id="modalType" class="modal-type"></span>
       </div>
     </div>
   </div>
 
-  <!-- Floating WhatsApp Quick Button -->
-  <a href="https://wa.me/51982296407?text=Hola%20Abel%20Vectores%2C%20deseo%20hacer%20una%20consulta%20sobre%20tus%20dise%C3%B1os%20de%20polos%20deportivos."
-    target="_blank" class="floating-whatsapp" aria-label="Chatear por WhatsApp">
-    <i class="fab fa-whatsapp"></i>
+  <a href="https://wa.me/51982296407" class="btn-whatsapp" target="_blank">
+    <i class="fab fa-whatsapp"></i> Contacto WhatsApp
   </a>
 
-  <!-- Link app.js -->
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 
 </html>

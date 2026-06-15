@@ -1,499 +1,487 @@
-/**
- * Abel Vectores - Tienda de Diseños Deportivos para Sublimación (CorelDRAW)
- * Senior Developer Quality JavaScript
- */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// 1. DATASET DE VECTORES DE POLOS DEPORTIVOS (10 Diseños Listos para Sublimar)
-const VECTORS_DATA = [
-  {
-    id: "POL-001",
-    title: "Camiseta de Fútbol 'Fénix'",
-    category: "futbol",
-    price: 20.00,
-    image: "images/vector1.svg",
-    formats: ["CDR", "PDF", "EPS"],
-    nodes: 342,
-    description: "Diseño dinámico de llamas y degradados de fuego. Patrón a escala real listo para sublimación textil.",
-    longDescription: "Diseño premium para camisetas de fútbol con temática de fuego y degradados agresivos (rojo, naranja, amarillo). El archivo CorelDRAW incluye moldes a escala 1:1 (delantero, espalda, mangas y cuello) listos para arrastrar tus logos, auspiciadores e imprimir en plotter de sublimación en perfil CMYK.",
-    details: {
-      usabilidad: "Sublimación Textil, Confección Deportiva",
-      tallas: "S, M, L, XL (Moldes escalables)",
-      resolucion: "Vectores limpios de alta precisión"
-    }
-  },
-  {
-    id: "POL-002",
-    title: "Camiseta de Fútbol 'Trueno'",
-    category: "futbol",
-    price: 20.00,
-    image: "images/vector2.svg",
-    formats: ["CDR", "PDF", "SVG"],
-    nodes: 289,
-    description: "Diseño con rayos eléctricos en tonos cian y morado. Totalmente editable en curvas.",
-    longDescription: "Un diseño electrizante y moderno que destaca en la cancha. Cuenta con texturas de fondo y rayos vectorizados en capas separadas para que puedas cambiar los colores principales con un par de clics en CorelDRAW. Incluye patrón delantero, trasero y mangas.",
-    details: {
-      usabilidad: "Sublimación Textil, Camisetas Deportivas",
-      tallas: "S, M, L, XL (Moldes 1:1)",
-      resolucion: "CMYK optimizado para impresión"
-    }
-  },
-  {
-    id: "POL-003",
-    title: "Camiseta de E-Sports 'Cyberpunk'",
-    category: "esports",
-    price: 25.00,
-    image: "images/vector3.svg",
-    formats: ["CDR", "AI", "EPS"],
-    nodes: 412,
-    description: "Jersey futurista con cuadrícula digital y acentos de color verde neón y magenta.",
-    longDescription: "Diseñado especialmente para equipos de gaming y e-sports. Presenta un patrón hexagonal tecnológico de fondo y cortes dinámicos en hombros y costados. Los textos y números son 100% editables; no requiere instalar fuentes complejas ya que incluye curvas guías.",
-    details: {
-      usabilidad: "Sublimación Digital, Ropa Deportiva Gaming",
-      tallas: "Completo escala 1:1 (Frente, Espalda, Mangas)",
-      resolucion: "Sin pixelado, nodos cerrados"
-    }
-  },
-  {
-    id: "POL-004",
-    title: "Camiseta de Básquetbol 'Caimán'",
-    category: "basquet-otros",
-    price: 22.00,
-    image: "images/vector4.svg",
-    formats: ["CDR", "AI", "SVG"],
-    nodes: 198,
-    description: "Jersey sin mangas con patrón de escamas texturizadas de caimán y detalles en amarillo.",
-    longDescription: "Diseño robusto para baloncesto. Incluye silueta clásica de básquetbol sin mangas con bordes de cuello y sisa en combinación contrastante. La textura de escamas está vectorizada de manera eficiente para que no sobrecargue tu memoria RAM al abrir el archivo.",
-    details: {
-      usabilidad: "Sublimación Baloncesto, Ropa Deportiva",
-      tallas: "Moldes sin mangas escala real 1:1",
-      resolucion: "Colores CMYK puros para plotter"
-    }
-  },
-  {
-    id: "POL-005",
-    title: "Camiseta de Running 'Aero Flow'",
-    category: "basquet-otros",
-    price: 18.00,
-    image: "images/vector5.svg",
-    formats: ["CDR", "PDF", "EPS"],
-    nodes: 256,
-    description: "Diseño atlético con líneas fluidas curvas degradadas en rosado, cian y azul oscuro.",
-    longDescription: "Perfecto para maratones, eventos de running y ropa deportiva casual. Las líneas de flujo transmiten velocidad y dinamismo. Optimizado para impresión directa en telas dry-fit, microfibra o poliéster deportivo.",
-    details: {
-      usabilidad: "Sublimación Running, Eventos Deportivos",
-      tallas: "Moldes completos para damas y varones",
-      resolucion: "Vectores nativos CorelDRAW"
-    }
-  },
-  {
-    id: "POL-006",
-    title: "Camiseta de Ciclismo 'Pro Speed'",
-    category: "basquet-otros",
-    price: 25.00,
-    image: "images/vector6.svg",
-    formats: ["CDR", "AI", "EPS"],
-    nodes: 310,
-    description: "Diseño de bloques de color geométricos y minimalistas con cremallera simulada.",
-    longDescription: "Molde ajustado de ciclismo (fit) que incluye los bolsillos traseros clásicos vectorizados en el patrón de la espalda. Los colores rosa y amarillo flúor están configurados para resaltar al sublimarse en telas deportivas de alta gama.",
-    details: {
-      usabilidad: "Sublimación Ciclismo, Ciclomontañismo",
-      tallas: "Patrón con bolsillos traseros incluidos 1:1",
-      resolucion: "Líneas de costura de guía incluidas"
-    }
-  },
-  {
-    id: "POL-007",
-    title: "Camiseta de Motocross 'Dirt Fire'",
-    category: "motocross",
-    price: 30.00,
-    image: "images/vector7.svg",
-    formats: ["CDR", "AI", "EPS"],
-    nodes: 460,
-    description: "Jersey de manga larga con estilo grunge agresivo, ángulos afilados en naranja y negro.",
-    longDescription: "Diseño extremo para motocross y enduro. Cuenta con patrón de manga larga con puños ajustados. Los paneles del diseño están vectorizados de manera que los codos y hombros mantengan continuidad visual al coser las piezas.",
-    details: {
-      usabilidad: "Sublimación Motocross, Enduro, BMX",
-      tallas: "Molde Manga Larga escala real 1:1",
-      resolucion: "Alta definición en curvas agresivas"
-    }
-  },
-  {
-    id: "POL-008",
-    title: "Camiseta de Fútbol 'Incaic' (Perú)",
-    category: "futbol",
-    price: 25.00,
-    image: "images/vector8.svg",
-    formats: ["CDR", "PDF", "SVG"],
-    nodes: 380,
-    description: "Diseño de colección con guardas y patrones incaicos dorados sobre fondo guinda oscuro.",
-    longDescription: "Camiseta de edición especial inspirada en la iconografía precolombina peruana. Ideal para equipos amateur o ligas de fútbol 7. Los detalles dorados están diseñados para resaltar con una alta saturación de tinta en el papel de sublimación.",
-    details: {
-      usabilidad: "Sublimación Camisetas de Fútbol, Ropa Deportiva",
-      tallas: "S, M, L, XL (Patrón completo delantero, espalda, mangas)",
-      resolucion: "CMYK optimizado para tintas de sublimación"
-    }
-  },
-  {
-    id: "POL-009",
-    title: "Camiseta de Voleibol 'Vortex'",
-    category: "basquet-otros",
-    price: 20.00,
-    image: "images/vector9.svg",
-    formats: ["CDR", "PDF", "EPS"],
-    nodes: 275,
-    description: "Diseño con ondas en espiral degradadas en morado, magenta y cian brillante.",
-    longDescription: "Diseño dinámico pensado para equipos femeninos y masculinos de voleibol. El patrón del polo está diseñado con cortes entallados (ajustados al cuerpo) y líneas curvas que estilizan la figura del deportista al jugar.",
-    details: {
-      usabilidad: "Sublimación Voleibol, Atletismo",
-      tallas: "Modelos entallados escala 1:1",
-      resolucion: "Vectores limpios sin cruces de contorno"
-    }
-  },
-  {
-    id: "POL-010",
-    title: "Camiseta de Fútbol 'Galaxia'",
-    category: "futbol",
-    price: 22.00,
-    image: "images/vector10.svg",
-    formats: ["CDR", "PDF", "SVG"],
-    nodes: 530,
-    description: "Nebulosa espacial con estrellas y tramas de líneas diagonales tecnológicas cruzadas.",
-    longDescription: "Un diseño espectacular que simula el espacio profundo con constelaciones y polvos estelares vectoriales. Las tramas de puntos están optimizadas en CorelDRAW para que no se empasten durante el proceso de calandra o planchado textil.",
-    details: {
-      usabilidad: "Sublimación Sublimado Completo (All-Over Print)",
-      tallas: "Patrón completo escala real 1:1",
-      resolucion: "Colores RGB/CMYK ultra profundos"
-    }
-  }
-];
-
-// 2. CONFIGURACIÓN DE ESTADO DE LA APLICACIÓN
-const state = {
-  currentPage: 1,
-  itemsPerPage: 6, // Muestra 6 por página (Página 1: 6, Página 2: 4)
-  currentCategory: 'all',
-  searchQuery: '',
-  whatsappNumber: '982296407'
+const firebaseConfig = {
+  apiKey: "AIzaSyByOA9ljORBHe7SsjQtFgfx6a-4ZJL1bXs",
+  authDomain: "abel-vectores.firebaseapp.com",
+  projectId: "abel-vectores",
+  storageBucket: "abel-vectores.firebasestorage.app",
+  messagingSenderId: "278953902562",
+  appId: "1:278953902562:web:e141d82507a2776f7039bb"
 };
 
-// 3. SELECTORES DEL DOM
-const catalogGrid = document.getElementById('catalogGrid');
-const paginationContainer = document.getElementById('pagination');
-const searchInput = document.getElementById('searchInput');
-const categoryFilters = document.getElementById('categoryFilters');
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const navMenu = document.getElementById('navMenu');
-const header = document.querySelector('.header');
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-// Modal Elements
-const detailModal = document.getElementById('detailModal');
-const modalClose = document.getElementById('modalClose');
-const modalImg = document.getElementById('modalImg');
-const modalCategory = document.getElementById('modalCategory');
-const modalTitle = document.getElementById('modalTitle');
-const modalPrice = document.getElementById('modalPrice');
-const modalDesc = document.getElementById('modalDesc');
-const modalId = document.getElementById('modalId');
-const modalFormats = document.getElementById('modalFormats');
-const modalNodes = document.getElementById('modalNodes');
-const modalUsabilidad = document.getElementById('modalUsabilidad');
-const modalMateriales = document.getElementById('modalMateriales');
-const modalBuyBtn = document.getElementById('modalBuyBtn');
+const WHATSAPP_NUMBER = "51982296407";
 
-// Contact Form Elements
-const contactForm = document.getElementById('contactForm');
+let VECTORS_DATA = [];
+const state = {
+  currentCategory: 'all',
+  currentType: 'all',
+  searchQuery: '',
+  adminSearch: '',
+  adminCategory: 'all'
+};
 
-// 4. LÓGICA DE WHATSAPP URL GENERATION
-function generateWhatsAppUrl(vector) {
-  const message = `Hola Abel Vectores, estoy interesado en comprar el vector de diseño de polo deportivo:\n` +
-                  `*${vector.title}*\n` +
-                  `• Código: *${vector.id}*\n` +
-                  `• Precio del Vector: *S/. ${vector.price.toFixed(2)}*\n` +
-                  `• Formato: *CorelDRAW (${vector.formats[0]})*\n\n` +
-                  `¿Me envías la información para el depósito (Yape/Plin/Cuenta)?`;
-  
-  return `https://wa.me/51${state.whatsappNumber}?text=${encodeURIComponent(message)}`;
+const urlParams = new URLSearchParams(window.location.search);
+const isSecretKeyPresent = urlParams.get('admin') === 'abel123';
+
+const loginSection = document.getElementById('loginSection');
+const adminPanel = document.getElementById('adminPanel');
+const catalogSection = document.getElementById('catalogo');
+
+const typeSelect = document.getElementById('type');
+const downloadUrlGroup = document.getElementById('downloadUrlGroup');
+const downloadUrlInput = document.getElementById('downloadUrl');
+
+function toggleDownloadField() {
+  if (!typeSelect || !downloadUrlGroup || !downloadUrlInput) return;
+
+  if (typeSelect.value === 'gratis') {
+    downloadUrlGroup.style.display = 'flex';
+    downloadUrlInput.required = true;
+  } else {
+    downloadUrlGroup.style.display = 'none';
+    downloadUrlInput.required = false;
+    downloadUrlInput.value = '';
+  }
 }
 
-// 5. FUNCIONES DE RENDERIZACIÓN
-function renderCatalog() {
-  // Limpiar contenedor
-  catalogGrid.innerHTML = '';
+if (typeSelect) {
+  typeSelect.addEventListener('change', toggleDownloadField);
+  toggleDownloadField();
+}
 
-  // Filtrar elementos por categoría y por búsqueda
-  const filteredData = VECTORS_DATA.filter(vector => {
-    const matchesCategory = state.currentCategory === 'all' || vector.category === state.currentCategory;
-    const matchesSearch = vector.title.toLowerCase().includes(state.searchQuery.toLowerCase()) || 
-                          vector.description.toLowerCase().includes(state.searchQuery.toLowerCase()) || 
-                          vector.id.toLowerCase().includes(state.searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+function showLoginSection() {
+  if (loginSection) loginSection.style.display = 'flex';
+  if (adminPanel) adminPanel.style.display = 'none';
+  if (catalogSection) catalogSection.style.display = 'none';
+}
+
+function showAdminPanel() {
+  if (loginSection) loginSection.style.display = 'none';
+  if (adminPanel) adminPanel.style.display = 'block';
+  if (catalogSection) catalogSection.style.display = 'none';
+  renderAdminList();
+}
+
+function showCatalog() {
+  if (loginSection) loginSection.style.display = 'none';
+  if (adminPanel) adminPanel.style.display = 'none';
+  if (catalogSection) catalogSection.style.display = 'block';
+}
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    showAdminPanel();
+  } else if (isSecretKeyPresent) {
+    showLoginSection();
+  } else {
+    showCatalog();
+  }
+});
+
+const loginForm = document.getElementById('loginForm');
+const loginBtn = document.getElementById('loginBtn');
+const passwordToggle = document.getElementById('passwordToggle');
+
+if (passwordToggle) {
+  passwordToggle.addEventListener('click', () => {
+    const passInput = document.getElementById('adminPass');
+    const icon = passwordToggle.querySelector('i');
+
+    if (passInput.type === 'password') {
+      passInput.type = 'text';
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    } else {
+      passInput.type = 'password';
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
   });
+}
 
-  // Si no hay resultados
-  if (filteredData.length === 0) {
-    catalogGrid.innerHTML = `
-      <div class="empty-catalog">
-        <i class="fas fa-search-minus"></i>
-        <h3>No se encontraron diseños de polos</h3>
-        <p>Intenta buscar otra camiseta o cambiar la categoría seleccionada.</p>
+if (loginForm) {
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('adminEmail').value;
+    const pass = document.getElementById('adminPass').value;
+
+    try {
+      loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+      loginBtn.disabled = true;
+
+      await signInWithEmailAndPassword(auth, email, pass);
+      location.reload();
+    } catch (e) {
+      alert("Acceso denegado. Credenciales incorrectas.");
+      loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+      loginBtn.disabled = false;
+    }
+  });
+}
+
+document.getElementById('logoutBtn')?.addEventListener('click', () => {
+  signOut(auth).then(() => {
+    location.href = "/";
+  });
+});
+
+function showEmptyState(containerId, message = 'No hay diseños disponibles aún') {
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <p>${message}</p>
       </div>
     `;
-    paginationContainer.innerHTML = '';
+  }
+}
+
+function updateDesignCount() {
+  const countEl = document.getElementById('designCount');
+  if (countEl) {
+    countEl.textContent = `${VECTORS_DATA.length} diseño${VECTORS_DATA.length !== 1 ? 's' : ''}`;
+  }
+}
+
+function typeLabel(type) {
+  return type === 'compra' ? 'Compra' : 'Gratis';
+}
+
+function openVectorAction(vector) {
+  const type = (vector.type || 'gratis').toLowerCase();
+
+  if (type === 'gratis') {
+    if (vector.downloadUrl) {
+      window.open(vector.downloadUrl, '_blank');
+    } else {
+      alert("Este diseño gratis no tiene enlace de descarga.");
+    }
     return;
   }
 
-  // Calcular límites de paginación
-  const totalItems = filteredData.length;
-  const totalPages = Math.ceil(totalItems / state.itemsPerPage);
-  
-  // Ajustar la página actual si excede el número total de páginas filtradas
-  if (state.currentPage > totalPages) {
-    state.currentPage = totalPages || 1;
+  const message = encodeURIComponent(`Hola, quiero comprar este diseño: ${vector.title}`);
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+}
+
+async function fetchVectores() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "vectores"));
+    VECTORS_DATA = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    renderCatalog();
+    renderAdminList();
+    updateDesignCount();
+
+    console.log('✅ Datos cargados:', VECTORS_DATA.length, 'diseños');
+  } catch (error) {
+    console.error("Error fetching vectores:", error);
+    showEmptyState('catalogGrid');
+    showEmptyState('adminListGrid');
+  }
+}
+
+function renderCatalog() {
+  const grid = document.getElementById('catalogGrid');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  const filtered = VECTORS_DATA.filter(v => {
+    const cat = (v.category || '').toLowerCase();
+    const title = (v.title || '').toLowerCase();
+    const type = (v.type || 'gratis').toLowerCase();
+
+    const matchCat = state.currentCategory === 'all' || cat === state.currentCategory;
+    const matchType = state.currentType === 'all' || type === state.currentType;
+    const matchSearch = title.includes(state.searchQuery.toLowerCase());
+
+    return matchCat && matchType && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    showEmptyState('catalogGrid', 'No se encontraron diseños');
+    return;
   }
 
-  const startIndex = (state.currentPage - 1) * state.itemsPerPage;
-  const endIndex = startIndex + state.itemsPerPage;
-  const paginatedData = filteredData.slice(startIndex, endIndex);
+  filtered.forEach(v => {
+    const type = (v.type || 'gratis').toLowerCase();
+    const isFree = type === 'gratis';
 
-  // Renderizar las tarjetas
-  paginatedData.forEach(vector => {
     const card = document.createElement('article');
     card.className = 'vector-card';
-    
-    // Crear insignias de formato
-    const formatBadgesHTML = vector.formats.map(f => {
-      const cls = f.toLowerCase() === 'cdr' ? 'cdr' : (f.toLowerCase() === 'svg' ? 'svg' : '');
-      return `<span class="format-badge ${cls}">${f}</span>`;
-    }).join('');
-
-    const waUrl = generateWhatsAppUrl(vector);
-
     card.innerHTML = `
-      <div class="vector-img-wrapper" onclick="showVectorDetails('${vector.id}')">
-        <div class="vector-formats">${formatBadgesHTML}</div>
-        <img src="${vector.image}" alt="${vector.title}" loading="lazy">
-        <button class="quick-view-btn">
-          <i class="fas fa-expand"></i> Ver Detalles
+      <img src="${v.image}" alt="${v.title}" loading="lazy">
+      <div class="vector-card-content">
+        <span class="vector-badge ${isFree ? 'badge-free' : 'badge-buy'}">
+          ${typeLabel(type)}
+        </span>
+        <h3>${v.title}</h3>
+        <p>${isFree ? 'Gratis' : `S/. ${parseFloat(v.price || 0).toFixed(2)}`}</p>
+        <button type="button" class="detail-btn">
+          <i class="fas ${isFree ? 'fa-download' : 'fa-cart-shopping'}"></i>
+          ${isFree ? 'Descargar gratis' : 'Comprar por WhatsApp'}
         </button>
       </div>
-      <div class="vector-body">
-        <span class="vector-category">${vector.category.toUpperCase()}</span>
-        <h3 class="vector-title">${vector.title}</h3>
-        <p class="vector-desc">${vector.description}</p>
-        <div class="vector-footer">
-          <div class="vector-price">
-            <span class="price-label">Vectores 1:1</span>
-            <span class="price-val">S/. ${vector.price.toFixed(2)}</span>
-          </div>
-          <a href="${waUrl}" target="_blank" class="btn-whatsapp">
-            <i class="fab fa-whatsapp"></i> Comprar
-          </a>
-        </div>
+    `;
+
+    card.querySelector('.detail-btn').addEventListener('click', () => openVectorAction(v));
+    grid.appendChild(card);
+  });
+}
+
+function renderAdminList() {
+  const grid = document.getElementById('adminListGrid');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  const filtered = VECTORS_DATA.filter(v => {
+    const cat = (v.category || '').toLowerCase();
+    const title = (v.title || '').toLowerCase();
+
+    const matchCat = state.adminCategory === 'all' || cat === state.adminCategory;
+    const matchSearch = title.includes(state.adminSearch.toLowerCase());
+
+    return matchCat && matchSearch;
+  });
+
+  console.log('📋 Renderizando lista admin:', filtered.length, 'diseños');
+
+  if (filtered.length === 0) {
+    showEmptyState('adminListGrid', 'No hay diseños en el panel');
+    return;
+  }
+
+  filtered.forEach(v => {
+    const type = (v.type || 'gratis').toLowerCase();
+
+    const item = document.createElement('div');
+    item.className = 'admin-list-item';
+    item.innerHTML = `
+      <img src="${v.image}" alt="${v.title}" class="admin-list-img">
+      <div class="admin-list-info">
+        <span class="admin-list-title">${v.title}</span>
+        <span class="admin-list-category">${v.category || 'Sin categoría'}</span>
+        <span class="vector-badge ${type === 'compra' ? 'badge-buy' : 'badge-free'}">${typeLabel(type)}</span>
+      </div>
+      <div class="admin-list-price">
+        ${type === 'gratis' ? 'Gratis' : `S/. ${parseFloat(v.price || 0).toFixed(2)}`}
+      </div>
+      <div class="admin-list-actions">
+        <button class="admin-action-btn edit" onclick="window.editVector('${v.id}')">
+          <i class="fas fa-edit"></i> Editar
+        </button>
+        <button class="admin-action-btn delete" onclick="window.deleteVector('${v.id}')">
+          <i class="fas fa-trash"></i> Eliminar
+        </button>
       </div>
     `;
-    catalogGrid.appendChild(card);
+    grid.appendChild(item);
   });
-
-  // Renderizar los controles de paginación
-  renderPagination(totalItems);
 }
 
-function renderPagination(totalItems) {
-  paginationContainer.innerHTML = '';
-  const totalPages = Math.ceil(totalItems / state.itemsPerPage);
+const uploadForm = document.getElementById('uploadForm');
 
-  if (totalPages <= 1) return; // No se requiere paginación para 1 sola página
+if (uploadForm) {
+  uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  // Botón Anterior
-  const prevBtn = document.createElement('button');
-  prevBtn.className = 'page-btn';
-  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-  prevBtn.disabled = state.currentPage === 1;
-  prevBtn.addEventListener('click', () => {
-    if (state.currentPage > 1) {
-      state.currentPage--;
-      renderCatalog();
-      scrollToCatalog();
+    const type = document.getElementById('type').value;
+    const nuevo = {
+      title: document.getElementById('title').value.trim(),
+      price: Number(document.getElementById('price').value || 0),
+      type,
+      category: document.getElementById('category').value,
+      image: document.getElementById('image').value.trim(),
+      longDescription: document.getElementById('longDescription').value.trim(),
+      createdAt: new Date().toISOString(),
+      downloadUrl: type === 'gratis'
+        ? document.getElementById('downloadUrl').value.trim()
+        : ''
+    };
+
+    try {
+      const uploadBtn = e.target.querySelector('button[type="submit"]');
+      uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo...';
+      uploadBtn.disabled = true;
+
+      await addDoc(collection(db, "vectores"), nuevo);
+
+      alert("✅ Diseño subido correctamente!");
+      e.target.reset();
+      toggleDownloadField();
+      fetchVectores();
+
+      uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Subir Diseño';
+      uploadBtn.disabled = false;
+    } catch (error) {
+      console.error("Error uploading:", error);
+      alert("❌ Error al subir el diseño");
+
+      const uploadBtn = e.target.querySelector('button[type="submit"]');
+      uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Subir Diseño';
+      uploadBtn.disabled = false;
     }
   });
-  paginationContainer.appendChild(prevBtn);
-
-  // Botones de Páginas
-  for (let i = 1; i <= totalPages; i++) {
-    const pageBtn = document.createElement('button');
-    pageBtn.className = `page-btn ${state.currentPage === i ? 'active' : ''}`;
-    pageBtn.textContent = i;
-    pageBtn.addEventListener('click', () => {
-      state.currentPage = i;
-      renderCatalog();
-      scrollToCatalog();
-    });
-    paginationContainer.appendChild(pageBtn);
-  }
-
-  // Botón Siguiente
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'page-btn';
-  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-  nextBtn.disabled = state.currentPage === totalPages;
-  nextBtn.addEventListener('click', () => {
-    if (state.currentPage < totalPages) {
-      state.currentPage++;
-      renderCatalog();
-      scrollToCatalog();
-    }
-  });
-  paginationContainer.appendChild(nextBtn);
 }
 
-function scrollToCatalog() {
-  document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
-}
-
-// 6. LÓGICA DE DETALLE (MODAL)
-window.showVectorDetails = function(vectorId) {
-  const vector = VECTORS_DATA.find(v => v.id === vectorId);
+window.editVector = async function (id) {
+  const vector = VECTORS_DATA.find(v => v.id === id);
   if (!vector) return;
 
-  modalImg.src = vector.image;
-  modalImg.alt = vector.title;
-  modalCategory.textContent = vector.category.toUpperCase();
-  modalTitle.textContent = vector.title;
-  modalPrice.textContent = `S/. ${vector.price.toFixed(2)}`;
-  modalDesc.textContent = vector.longDescription;
-  modalId.textContent = vector.id;
-  modalFormats.textContent = vector.formats.join(' / ');
-  modalNodes.textContent = `${vector.nodes} Nodos`;
-  modalUsabilidad.textContent = vector.details.usabilidad;
-  modalMateriales.textContent = vector.details.tallas;
-  
-  modalBuyBtn.href = generateWhatsAppUrl(vector);
+  const title = prompt("Editar nombre:", vector.title);
+  if (!title) return;
 
-  // Mostrar modal con transiciones
-  detailModal.style.display = 'flex';
-  setTimeout(() => {
-    detailModal.classList.add('open');
-  }, 10);
-  
-  // Bloquear scroll de la página
-  document.body.style.overflow = 'hidden';
+  const price = prompt("Editar precio:", vector.price);
+  if (!price) return;
+
+  const type = prompt("Editar tipo (gratis/compra):", vector.type || 'gratis');
+  if (!type) return;
+
+  const category = prompt("Editar categoría (futbol/esports/motocross):", vector.category);
+  if (!category) return;
+
+  const image = prompt("Editar URL de imagen:", vector.image);
+  if (!image) return;
+
+  const description = prompt("Editar descripción:", vector.longDescription || "");
+  const downloadUrl = type.toLowerCase() === 'gratis'
+    ? prompt("Editar URL de descarga:", vector.downloadUrl || "")
+    : "";
+
+  try {
+    await updateDoc(doc(db, "vectores", id), {
+      title: title.trim(),
+      price: Number(price || 0),
+      type: type.toLowerCase(),
+      category: category.trim().toLowerCase(),
+      image: image.trim(),
+      longDescription: (description || '').trim(),
+      downloadUrl: downloadUrl ? downloadUrl.trim() : ''
+    });
+
+    alert("✅ Diseño actualizado correctamente!");
+    fetchVectores();
+  } catch (error) {
+    console.error("Error updating:", error);
+    alert("❌ Error al actualizar el diseño");
+  }
 };
 
-function closeModal() {
-  detailModal.classList.remove('open');
-  setTimeout(() => {
-    detailModal.style.display = 'none';
-  }, 400);
-  // Habilitar scroll
-  document.body.style.overflow = '';
+window.deleteVector = async function (id) {
+  const vector = VECTORS_DATA.find(v => v.id === id);
+  if (!vector) return;
+
+  const confirmDelete = confirm(`⚠️ ¿Eliminar "${vector.title}"? Esta acción no se puede revertir.`);
+  if (!confirmDelete) return;
+
+  try {
+    await deleteDoc(doc(db, "vectores", id));
+    alert("✅ Diseño eliminado correctamente!");
+    fetchVectores();
+  } catch (error) {
+    console.error("Error deleting:", error);
+    alert("❌ Error al eliminar el diseño");
+  }
+};
+
+const publicFilter = document.getElementById('publicFilter');
+const publicTypeFilter = document.getElementById('publicTypeFilter');
+const publicSearch = document.getElementById('publicSearch');
+
+if (publicFilter) {
+  publicFilter.addEventListener('change', (e) => {
+    state.currentCategory = e.target.value;
+    renderCatalog();
+  });
 }
 
-// 7. EVENT LISTENERS
-// Búsqueda en tiempo real
-searchInput.addEventListener('input', (e) => {
-  state.searchQuery = e.target.value;
-  state.currentPage = 1;
-  renderCatalog();
-});
-
-// Filtros de categoría
-categoryFilters.addEventListener('click', (e) => {
-  if (e.target.classList.contains('filter-btn')) {
-    // Quitar active de los anteriores
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    // Poner active al seleccionado
-    e.target.classList.add('active');
-    
-    state.currentCategory = e.target.dataset.category;
-    state.currentPage = 1;
+if (publicTypeFilter) {
+  publicTypeFilter.addEventListener('change', (e) => {
+    state.currentType = e.target.value;
     renderCatalog();
+  });
+}
+
+if (publicSearch) {
+  publicSearch.addEventListener('input', (e) => {
+    state.searchQuery = e.target.value.trim();
+    renderCatalog();
+  });
+}
+
+const adminFilter = document.getElementById('adminFilter');
+const adminSearch = document.getElementById('adminSearch');
+
+if (adminFilter) {
+  adminFilter.addEventListener('change', (e) => {
+    state.adminCategory = e.target.value;
+    renderAdminList();
+  });
+}
+
+if (adminSearch) {
+  adminSearch.addEventListener('input', (e) => {
+    state.adminSearch = e.target.value.trim();
+    renderAdminList();
+  });
+}
+
+window.openModal = function (id) {
+  const vector = VECTORS_DATA.find(v => v.id === id);
+  if (!vector) return;
+
+  const type = (vector.type || 'gratis').toLowerCase();
+
+  document.getElementById('modalTitle').textContent = vector.title;
+  document.getElementById('modalImg').src = vector.image;
+  document.getElementById('modalDescription').textContent = vector.longDescription || 'Sin descripción disponible';
+  document.getElementById('modalPrice').textContent = type === 'gratis' ? 'Gratis' : `S/. ${parseFloat(vector.price || 0).toFixed(2)}`;
+  const modalType = document.getElementById('modalType');
+  if (modalType) modalType.textContent = typeLabel(type);
+
+  document.getElementById('detailModal').style.display = 'flex';
+};
+
+document.getElementById('modalClose')?.addEventListener('click', () => {
+  document.getElementById('detailModal').style.display = 'none';
+});
+
+document.getElementById('detailModal')?.addEventListener('click', (e) => {
+  if (e.target.id === 'detailModal') {
+    e.target.style.display = 'none';
   }
 });
 
-// Botón cerrar modal
-modalClose.addEventListener('click', closeModal);
-detailModal.addEventListener('click', (e) => {
-  if (e.target === detailModal || e.target.classList.contains('modal-overlay')) {
-    closeModal();
-  }
-});
-
-// Escuchar tecla escape para cerrar modal
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && detailModal.classList.contains('open')) {
-    closeModal();
+  if (e.key === 'Escape') {
+    document.getElementById('detailModal').style.display = 'none';
   }
 });
 
-// Menú Móvil Hamburguesa
-mobileMenuBtn.addEventListener('click', () => {
-  navMenu.classList.toggle('open');
-  mobileMenuBtn.classList.toggle('active');
-});
+console.log('🚀 Iniciando Abel Vectores...');
+console.log('🔑 Secret key presente:', isSecretKeyPresent);
+fetchVectores();
 
-// Cerrar menú móvil al hacer click en un enlace
-document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    navMenu.classList.remove('open');
-    mobileMenuBtn.classList.remove('active');
-    
-    // Quitar active de los otros enlaces
-    document.querySelectorAll('.nav-link').forEach(nl => nl.classList.remove('active'));
-    link.classList.add('active');
-  });
-});
-
-// Efecto de Header Scroll
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 50) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
-  
-  // Highlight active section on scroll
-  const sections = document.querySelectorAll('section');
-  const scrollPosition = window.scrollY + 100;
-  
-  sections.forEach(section => {
-    const top = section.offsetTop;
-    const height = section.offsetHeight;
-    const id = section.getAttribute('id');
-    
-    if (scrollPosition >= top && scrollPosition < top + height) {
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${id}`) {
-          link.classList.add('active');
-        }
-      });
+if (!document.querySelector('.fa-spin')) {
+  const style = document.createElement('style');
+  style.textContent = `
+    .fa-spin {
+      animation: fa-spin 2s infinite linear;
     }
-  });
-});
+    @keyframes fa-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
-// Formulario de Contacto redirecciona a WhatsApp con mensaje personalizado
-contactForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  
-  const name = document.getElementById('contactName').value;
-  const email = document.getElementById('contactEmail').value;
-  const message = document.getElementById('contactMsg').value;
-  
-  const formattedText = `Hola Abel Vectores,\n` +
-                        `Mi nombre es: *${name}*\n` +
-                        `Correo: *${email}*\n` +
-                        `Consulta sobre sublimación deportiva: *${message}*`;
-                        
-  const waUrl = `https://wa.me/51${state.whatsappNumber}?text=${encodeURIComponent(formattedText)}`;
-  
-  // Abrir chat de WhatsApp
-  window.open(waUrl, '_blank');
-  
-  // Resetear formulario
-  contactForm.reset();
-});
-
-// 8. INICIALIZAR APLICACIÓN
-document.addEventListener('DOMContentLoaded', () => {
-  renderCatalog();
-});
+console.log('✅ Abel Vectores app.js loaded successfully');
